@@ -19,6 +19,8 @@
 * [Reflection](reflection.md)
 * [Sync](sync.md)
 * [Context](context.md)
+* [Intro to property based tests](roman-numerals.md)
+* [Maths](math.md)
 
 ## Build an application
 
@@ -34,6 +36,8 @@
 
 * [OS Exec](os-exec.md)
 * [Error types](error-types.md)
+* [Context-aware Reader](context-aware-reader.md)
+* [Revisiting HTTP Handlers](http-handlers-revisited.md)
 
 ## Meta
 

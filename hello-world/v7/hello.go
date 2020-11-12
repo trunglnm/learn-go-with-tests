@@ -4,17 +4,17 @@ import "fmt"
 
 const spanish = "Spanish"
 const french = "French"
-const helloPrefix = "Hello, "
+const englishHelloPrefix = "Hello, "
 const spanishHelloPrefix = "Hola, "
 const frenchHelloPrefix = "Bonjour, "
 
-// Hello returns a personalised greeting in a given language
+// Hello returns a personalised greeting in a given language.
 func Hello(name string, language string) string {
 	if name == "" {
 		name = "World"
 	}
 
-	prefix := helloPrefix
+	prefix := englishHelloPrefix
 
 	switch language {
 	case french:

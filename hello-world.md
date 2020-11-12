@@ -2,13 +2,15 @@
 
 **[You can find all the code for this chapter here](https://github.com/quii/learn-go-with-tests/tree/master/hello-world)**
 
-It is traditional for your first program in a new language to be Hello, world.
+It is traditional for your first program in a new language to be [Hello, World](https://en.m.wikipedia.org/wiki/%22Hello,_World!%22_program). 
 
 In the [previous chapter](install-go.md#go-environment) we discussed how Go is opinionated as to where you put your files.
 
 Make a directory in the following path `$GOPATH/src/github.com/{your-user-id}/hello`.
 
-So if you're on a unix based OS and your username is "bob" and you are happy to stick with Go's conventions about `$GOPATH` (which is the easiest way of setting up) you could run `mkdir -p $GOPATH/src/github.com/bob/hello`.
+So if you're on a unix based OS and you are happy to stick with Go's conventions about `$GOPATH` (which is the easiest way of setting up) you could run `mkdir -p $GOPATH/src/github.com/$USER/hello`.
+
+For subsequent chapters, you can make a new folder with whatever name you like to put the code in e.g `$GOPATH/src/github.com/{your-user-id}/integers` for the next chapter might be sensible. Some readers of this book like to make an enclosing folder for all the work such as "learn-go-with-tests/hello". In short, it's up to you how you structure your folders.
 
 Create a file in this directory called `hello.go` and write this code. To run it type `go run hello.go`.
 
@@ -18,7 +20,7 @@ package main
 import "fmt"
 
 func main() {
-    fmt.Println("Hello, world")
+	fmt.Println("Hello, world")
 }
 ```
 
@@ -42,11 +44,11 @@ package main
 import "fmt"
 
 func Hello() string {
-    return "Hello, world"
+	return "Hello, world"
 }
 
 func main() {
-    fmt.Println(Hello())
+	fmt.Println(Hello())
 }
 ```
 
@@ -60,12 +62,12 @@ package main
 import "testing"
 
 func TestHello(t *testing.T) {
-    got := Hello()
-    want := "Hello, world"
+	got := Hello()
+	want := "Hello, world"
 
-    if got != want {
-        t.Errorf("got '%s' want '%s'", got, want)
-    }
+	if got != want {
+		t.Errorf("got %q want %q", got, want)
+	}
 }
 ```
 
@@ -94,7 +96,9 @@ We're declaring some variables with the syntax `varName := value`, which lets us
 
 #### `t.Errorf`
 
-We are calling the `Errorf` _method_ on our `t` which will print out a message and fail the test. The `f` stands for format which allows us to build a string with values inserted into the placeholder values `%s`. When you made the test fail it should be clear how it works.
+We are calling the `Errorf` _method_ on our `t` which will print out a message and fail the test. The `f` stands for format which allows us to build a string with values inserted into the placeholder values `%q`. When you made the test fail it should be clear how it works.
+
+You can read more about the placeholder strings in the [fmt go doc](https://golang.org/pkg/fmt/#hdr-Printing). For tests `%q` is very useful as it wraps your values in double quotes.
 
 We will later explore the difference between methods and functions.
 
@@ -103,6 +107,8 @@ We will later explore the difference between methods and functions.
 Another quality of life feature of Go is the documentation. You can launch the docs locally by running `godoc -http :8000`. If you go to [localhost:8000/pkg](http://localhost:8000/pkg) you will see all the packages installed on your system.
 
 The vast majority of the standard library has excellent documentation with examples. Navigating to [http://localhost:8000/pkg/testing/](http://localhost:8000/pkg/testing/) would be worthwhile to see what's available to you.
+
+If you don't have `godoc` command, then maybe you are using the newer version of Go (1.14 or later) which is [no longer including `godoc`](https://golang.org/doc/go1.14#godoc). You can manually install it with `go get golang.org/x/tools/cmd/godoc`.
 
 ### Hello, YOU
 
@@ -120,12 +126,12 @@ package main
 import "testing"
 
 func TestHello(t *testing.T) {
-    got := Hello("Chris")
-    want := "Hello, Chris"
+	got := Hello("Chris")
+	want := "Hello, Chris"
 
-    if got != want {
-        t.Errorf("got '%s' want '%s'", got, want)
-    }
+	if got != want {
+		t.Errorf("got %q want %q", got, want)
+	}
 }
 ```
 
@@ -145,7 +151,7 @@ Edit the `Hello` function to accept an argument of type string
 
 ```go
 func Hello(name string) string {
-    return "Hello, world"
+	return "Hello, world"
 }
 ```
 
@@ -153,7 +159,7 @@ If you try and run your tests again your `main.go` will fail to compile because 
 
 ```go
 func main() {
-    fmt.Println(Hello("world"))
+	fmt.Println(Hello("world"))
 }
 ```
 
@@ -169,7 +175,7 @@ Let's make the test pass by using the name argument and concatenate it with `Hel
 
 ```go
 func Hello(name string) string {
-    return "Hello, " + name
+	return "Hello, " + name
 }
 ```
 
@@ -183,23 +189,23 @@ At this point, if you are using source control \(which you should!\) I would
 I _wouldn't_ push to master though, because I plan to refactor next. It is nice
 to commit at this point in case you somehow get into a mess with refactoring - you can always go back to the working version.
 
-There's not a lot to refactor here, but we can introduce another language feature _constants_.
+There's not a lot to refactor here, but we can introduce another language feature, _constants_.
 
 ### Constants
 
 Constants are defined like so
 
 ```go
-const englishPrefix = "Hello, "
+const englishHelloPrefix = "Hello, "
 ```
 
 We can now refactor our code
 
 ```go
-const englishPrefix = "Hello, "
+const englishHelloPrefix = "Hello, "
 
 func Hello(name string) string {
-    return englishPrefix + name
+	return englishHelloPrefix + name
 }
 ```
 
@@ -218,23 +224,23 @@ Start by writing a new failing test
 ```go
 func TestHello(t *testing.T) {
 
-    t.Run("saying hello to people", func(t *testing.T) {
-        got := Hello("Chris")
-        want := "Hello, Chris"
+	t.Run("saying hello to people", func(t *testing.T) {
+		got := Hello("Chris")
+		want := "Hello, Chris"
 
-        if got != want {
-            t.Errorf("got '%s' want '%s'", got, want)
-        }
-    })
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
 
-    t.Run("say 'Hello, World' when an empty string is supplied", func(t *testing.T) {
-        got := Hello("")
-        want := "Hello, World"
+	t.Run("say 'Hello, World' when an empty string is supplied", func(t *testing.T) {
+		got := Hello("")
+		want := "Hello, World"
 
-        if got != want {
-            t.Errorf("got '%s' want '%s'", got, want)
-        }
-    })
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
 
 }
 ```
@@ -254,24 +260,24 @@ We can and should refactor our tests.
 ```go
 func TestHello(t *testing.T) {
 
-    assertCorrectMessage := func(t *testing.T, got, want string) {
-        t.Helper()
-        if got != want {
-            t.Errorf("got '%s' want '%s'", got, want)
-        }
-    }
+	assertCorrectMessage := func(t *testing.T, got, want string) {
+		t.Helper()
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	}
 
-    t.Run("saying hello to people", func(t *testing.T) {
-        got := Hello("Chris")
-        want := "Hello, Chris"
-        assertCorrectMessage(t, got, want)
-    })
+	t.Run("saying hello to people", func(t *testing.T) {
+		got := Hello("Chris")
+		want := "Hello, Chris"
+		assertCorrectMessage(t, got, want)
+	})
 
-    t.Run("empty string defaults to 'World'", func(t *testing.T) {
-        got := Hello("")
-        want := "Hello, World"
-        assertCorrectMessage(t, got, want)
-    })
+	t.Run("empty string defaults to 'World'", func(t *testing.T) {
+		got := Hello("")
+		want := "Hello, World"
+		assertCorrectMessage(t, got, want)
+	})
 
 }
 ```
@@ -285,13 +291,13 @@ We've refactored our assertion into a function. This reduces duplication and imp
 Now that we have a well-written failing test, let's fix the code, using an `if`.
 
 ```go
-const englishPrefix = "Hello, "
+const englishHelloPrefix = "Hello, "
 
 func Hello(name string) string {
-    if name == "" {
-        name = "World"
-    }
-    return englishPrefix + name
+	if name == "" {
+		name = "World"
+	}
+	return englishHelloPrefix + name
 }
 ```
 
@@ -331,11 +337,11 @@ We should be confident that we can use TDD to flesh out this functionality easil
 Write a test for a user passing in Spanish. Add it to the existing suite.
 
 ```go
-    t.Run("in Spanish", func(t *testing.T) {
-        got := Hello("Elodie", "Spanish")
-        want := "Hola, Elodie"
-        assertCorrectMessage(t, got, want)
-    })
+	t.Run("in Spanish", func(t *testing.T) {
+		got := Hello("Elodie", "Spanish")
+		want := "Hola, Elodie"
+		assertCorrectMessage(t, got, want)
+	})
 ```
 
 Remember not to cheat! _Test first_. When you try and run the test, the compiler _should_ complain because you are calling `Hello` with two arguments rather than one.
@@ -350,10 +356,10 @@ Fix the compilation problems by adding another string argument to `Hello`
 
 ```go
 func Hello(name string, language string) string {
-    if name == "" {
-        name = "World"
-    }
-    return englishPrefix + name
+	if name == "" {
+		name = "World"
+	}
+	return englishHelloPrefix + name
 }
 ```
 
@@ -375,15 +381,15 @@ We can use `if` here to check the language is equal to "Spanish" and if so chang
 
 ```go
 func Hello(name string, language string) string {
-    if name == "" {
-        name = "World"
-    }
+	if name == "" {
+		name = "World"
+	}
 
-    if language == "Spanish" {
-        return "Hola, " + name
-    }
+	if language == "Spanish" {
+		return "Hola, " + name
+	}
 
-    return englishPrefix + name
+	return englishHelloPrefix + name
 }
 ```
 
@@ -392,20 +398,20 @@ The tests should now pass.
 Now it is time to _refactor_. You should see some problems in the code, "magic" strings, some of which are repeated. Try and refactor it yourself, with every change make sure you re-run the tests to make sure your refactoring isn't breaking anything.
 
 ```go
-const englishPrefix = "Hello, "
 const spanish = "Spanish"
+const englishHelloPrefix = "Hello, "
 const spanishHelloPrefix = "Hola, "
 
 func Hello(name string, language string) string {
-    if name == "" {
-        name = "World"
-    }
+	if name == "" {
+		name = "World"
+	}
 
-    if language == spanish {
-        return spanishHelloPrefix + name
-    }
+	if language == spanish {
+		return spanishHelloPrefix + name
+	}
 
-    return englishPrefix + name
+	return englishHelloPrefix + name
 }
 ```
 
@@ -419,19 +425,19 @@ You may have written something that looks roughly like this
 
 ```go
 func Hello(name string, language string) string {
-    if name == "" {
-        name = "World"
-    }
+	if name == "" {
+		name = "World"
+	}
 
-    if language == spanish {
-        return spanishHelloPrefix + name
-    }
+	if language == spanish {
+		return spanishHelloPrefix + name
+	}
 
-    if language == french {
-        return frenchHelloPrefix + name
-    }
+	if language == french {
+		return frenchHelloPrefix + name
+	}
 
-    return englishPrefix + name
+	return englishHelloPrefix + name
 }
 ```
 
@@ -441,20 +447,20 @@ When you have lots of `if` statements checking a particular value it is common t
 
 ```go
 func Hello(name string, language string) string {
-    if name == "" {
-        name = "World"
-    }
+	if name == "" {
+		name = "World"
+	}
 
-    prefix := englishPrefix
+	prefix := englishHelloPrefix
 
-    switch language {
-    case french:
-        prefix = frenchHelloPrefix
-    case spanish:
-        prefix = spanishHelloPrefix
-    }
+	switch language {
+	case french:
+		prefix = frenchHelloPrefix
+	case spanish:
+		prefix = spanishHelloPrefix
+	}
 
-    return prefix + name
+	return prefix + name
 }
 ```
 
@@ -466,23 +472,23 @@ You could argue that maybe our function is getting a little big. The simplest re
 
 ```go
 func Hello(name string, language string) string {
-    if name == "" {
-        name = "World"
-    }
+	if name == "" {
+		name = "World"
+	}
 
-    return greetingPrefix(language) + name
+	return greetingPrefix(language) + name
 }
 
 func greetingPrefix(language string) (prefix string) {
-    switch language {
-    case french:
-        prefix = frenchHelloPrefix
-    case spanish:
-        prefix = spanishHelloPrefix
-    default:
-        prefix = englishPrefix
-    }
-    return
+	switch language {
+	case french:
+		prefix = frenchHelloPrefix
+	case spanish:
+		prefix = spanishHelloPrefix
+	default:
+		prefix = englishHelloPrefix
+	}
+	return
 }
 ```
 
@@ -515,6 +521,6 @@ By now you should have some understanding of:
 * Writing the smallest amount of code to make it pass so we know we have working software
 * _Then_ refactor, backed with the safety of our tests to ensure we have well-crafted code that is easy to work with
 
-In our case we've gone from `Hello()` to `Hello("name")`, to `Hello("name", "french")` in small, easy to understand steps.
+In our case we've gone from `Hello()` to `Hello("name")`, to `Hello("name", "French")` in small, easy to understand steps.
 
 This is of course trivial compared to "real world" software but the principles still stand. TDD is a skill that needs practice to develop but by being able to break problems down into smaller components that you can test you will have a much easier time writing software.

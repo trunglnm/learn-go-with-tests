@@ -22,14 +22,14 @@ import "testing"
 
 func TestSum(t *testing.T) {
 
-    numbers := [5]int{1, 2, 3, 4, 5}
+	numbers := [5]int{1, 2, 3, 4, 5}
 
-    got := Sum(numbers)
-    want := 15
+	got := Sum(numbers)
+	want := 15
 
-    if want != got {
-        t.Errorf("got %d want %d given, %v", got, want, numbers)
-    }
+	if got != want {
+		t.Errorf("got %d want %d given, %v", got, want, numbers)
+	}
 }
 ```
 
@@ -57,7 +57,7 @@ In `sum.go`
 package main
 
 func Sum(numbers [5]int) int {
-    return 0
+	return 0
 }
 ```
 
@@ -69,11 +69,11 @@ Your test should now fail with _a clear error message_
 
 ```go
 func Sum(numbers [5]int) int {
-    sum := 0
-    for i := 0; i < 5; i++ {
-        sum += numbers[i]
-    }
-    return sum
+	sum := 0
+	for i := 0; i < 5; i++ {
+		sum += numbers[i]
+	}
+	return sum
 }
 ```
 
@@ -87,11 +87,11 @@ Let's introduce [`range`](https://gobyexample.com/range) to help clean up our co
 
 ```go
 func Sum(numbers [5]int) int {
-    sum := 0
-    for _, number := range numbers {
-        sum += number
-    }
-    return sum
+	sum := 0
+	for _, number := range numbers {
+		sum += number
+	}
+	return sum
 }
 ```
 
@@ -101,7 +101,7 @@ using `_` [blank identifier](https://golang.org/doc/effective_go.html#blank).
 
 ### Arrays and their type
 
-An interesting property of arrays is the size is encoded in its type. If you try
+An interesting property of arrays is that the size is encoded in its type. If you try
 to pass an `[4]int` into a function that expects `[5]int`, it won't compile.
 They are different types so it's just the same as trying to pass a `string` into
 a function that wants an `int`.
@@ -125,27 +125,27 @@ declaring them
 ```go
 func TestSum(t *testing.T) {
 
-    t.Run("collection of 5 numbers", func(t *testing.T) {
-        numbers := [5]int{1, 2, 3, 4, 5}
+	t.Run("collection of 5 numbers", func(t *testing.T) {
+		numbers := [5]int{1, 2, 3, 4, 5}
 
-        got := Sum(numbers)
-        want := 15
+		got := Sum(numbers)
+		want := 15
 
-        if got != want {
-            t.Errorf("got %d want %d given, %v", got, want, numbers)
-        }
-    })
+		if got != want {
+			t.Errorf("got %d want %d given, %v", got, want, numbers)
+		}
+	})
 
-    t.Run("collection of any size", func(t *testing.T) {
-        numbers := []int{1, 2, 3}
+	t.Run("collection of any size", func(t *testing.T) {
+		numbers := []int{1, 2, 3}
 
-        got := Sum(numbers)
-        want := 6
+		got := Sum(numbers)
+		want := 6
 
-        if got != want {
-            t.Errorf("got %d want %d given, %v", got, want, numbers)
-        }
-    })
+		if got != want {
+			t.Errorf("got %d want %d given, %v", got, want, numbers)
+		}
+	})
 
 }
 ```
@@ -169,11 +169,11 @@ In our case, no-one else is using our function so rather than having two functio
 
 ```go
 func Sum(numbers []int) int {
-    sum := 0
-    for _, number := range numbers {
-        sum += number
-    }
-    return sum
+	sum := 0
+	for _, number := range numbers {
+		sum += number
+	}
+	return sum
 }
 ```
 
@@ -190,27 +190,27 @@ We had already refactored `Sum` and all we've done is changing from arrays to sl
 ```go
 func TestSum(t *testing.T) {
 
-    t.Run("collection of 5 numbers", func(t *testing.T) {
-        numbers := []int{1, 2, 3, 4, 5}
+	t.Run("collection of 5 numbers", func(t *testing.T) {
+		numbers := []int{1, 2, 3, 4, 5}
 
-        got := Sum(numbers)
-        want := 15
+		got := Sum(numbers)
+		want := 15
 
-        if got != want {
-            t.Errorf("got %d want %d given, %v", got, want, numbers)
-        }
-    })
+		if got != want {
+			t.Errorf("got %d want %d given, %v", got, want, numbers)
+		}
+	})
 
-    t.Run("collection of any size", func(t *testing.T) {
-        numbers := []int{1, 2, 3}
+	t.Run("collection of any size", func(t *testing.T) {
+		numbers := []int{1, 2, 3}
 
-        got := Sum(numbers)
-        want := 6
+		got := Sum(numbers)
+		want := 6
 
-        if got != want {
-            t.Errorf("got %d want %d given, %v", got, want, numbers)
-        }
-    })
+		if got != want {
+			t.Errorf("got %d want %d given, %v", got, want, numbers)
+		}
+	})
 
 }
 ```
@@ -263,12 +263,12 @@ or
 ```go
 func TestSumAll(t *testing.T) {
 
-    got := SumAll([]int{1,2}, []int{0,9})
-    want := []int{3, 9}
+	got := SumAll([]int{1, 2}, []int{0, 9})
+	want := []int{3, 9}
 
-    if got != want {
-        t.Errorf("got %v want %v", got, want)
-    }
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
 }
 ```
 
@@ -284,7 +284,7 @@ Go can let you write [_variadic functions_](https://gobyexample.com/variadic-fun
 
 ```go
 func SumAll(numbersToSum ...[]int) (sums []int) {
-    return
+	return
 }
 ```
 
@@ -300,12 +300,12 @@ useful for seeing if _any_ two variables are the same.
 ```go
 func TestSumAll(t *testing.T) {
 
-    got := SumAll([]int{1,2}, []int{0,9})
-    want := []int{3, 9}
+	got := SumAll([]int{1, 2}, []int{0, 9})
+	want := []int{3, 9}
 
-    if !reflect.DeepEqual(got, want) {
-        t.Errorf("got %v want %v", got, want)
-    }
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
+	}
 }
 ```
 
@@ -318,12 +318,12 @@ temporarily change the test to:
 ```go
 func TestSumAll(t *testing.T) {
 
-    got := SumAll([]int{1,2}, []int{0,9})
-    want := "bob"
+	got := SumAll([]int{1, 2}, []int{0, 9})
+	want := "bob"
 
-    if !reflect.DeepEqual(got, want) {
-        t.Errorf("got %v want %v", got, want)
-    }
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
+	}
 }
 ```
 
@@ -343,14 +343,14 @@ What we need to do is iterate over the varargs, calculate the sum using our
 
 ```go
 func SumAll(numbersToSum ...[]int) []int {
-    lengthOfNumbers := len(numbersToSum)
-    sums := make([]int, lengthOfNumbers)
+	lengthOfNumbers := len(numbersToSum)
+	sums := make([]int, lengthOfNumbers)
 
-    for i, numbers := range numbersToSum {
-        sums[i] = Sum(numbers)
-    }
+	for i, numbers := range numbersToSum {
+		sums[i] = Sum(numbers)
+	}
 
-    return sums
+	return sums
 }
 ```
 
@@ -374,12 +374,12 @@ returning a new slice with all the items in it.
 
 ```go
 func SumAll(numbersToSum ...[]int) []int {
-    var sums []int
-    for _, numbers := range numbersToSum {
-        sums = append(sums, Sum(numbers))
-    }
+	var sums []int
+	for _, numbers := range numbersToSum {
+		sums = append(sums, Sum(numbers))
+	}
 
-    return sums
+	return sums
 }
 ```
 
@@ -394,12 +394,12 @@ all the items apart from the first one \(the "head"\)
 
 ```go
 func TestSumAllTails(t *testing.T) {
-    got := SumAllTails([]int{1,2}, []int{0,9})
-    want := []int{2, 9}
+	got := SumAllTails([]int{1, 2}, []int{0, 9})
+	want := []int{2, 9}
 
-    if !reflect.DeepEqual(got, want) {
-        t.Errorf("got %v want %v", got, want)
-    }
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
+	}
 }
 ```
 
@@ -417,13 +417,13 @@ Rename the function to `SumAllTails` and re-run the test
 
 ```go
 func SumAllTails(numbersToSum ...[]int) []int {
-    var sums []int
-    for _, numbers := range numbersToSum {
-        tail := numbers[1:]
-        sums = append(sums, Sum(tail))
-    }
+	var sums []int
+	for _, numbers := range numbersToSum {
+		tail := numbers[1:]
+		sums = append(sums, Sum(tail))
+	}
 
-    return sums
+	return sums
 }
 ```
 
@@ -446,23 +446,23 @@ capture all elements from `myEmptySlice[1:]`?
 ```go
 func TestSumAllTails(t *testing.T) {
 
-    t.Run("make the sums of some slices", func(t *testing.T) {
-        got := SumAllTails([]int{1,2}, []int{0,9})
-        want := []int{2, 9}
+	t.Run("make the sums of some slices", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2}, []int{0, 9})
+		want := []int{2, 9}
 
-        if !reflect.DeepEqual(got, want) {
-            t.Errorf("got %v want %v", got, want)
-        }
-    })
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
 
-    t.Run("safely sum empty slices", func(t *testing.T) {
-        got := SumAllTails([]int{}, []int{3, 4, 5})
-        want := []int{0, 9}
+	t.Run("safely sum empty slices", func(t *testing.T) {
+		got := SumAllTails([]int{}, []int{3, 4, 5})
+		want := []int{0, 9}
 
-        if !reflect.DeepEqual(got, want) {
-            t.Errorf("got %v want %v", got, want)
-        }
-    })
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
 
 }
 ```
@@ -482,17 +482,17 @@ works, runtime errors are our enemies because they affect our users.
 
 ```go
 func SumAllTails(numbersToSum ...[]int) []int {
-    var sums []int
-    for _, numbers := range numbersToSum {
-        if len(numbers) == 0 {
-            sums = append(sums, 0)
-        } else {
-            tail := numbers[1:]
-            sums = append(sums, Sum(tail))
-        }
-    }
+	var sums []int
+	for _, numbers := range numbersToSum {
+		if len(numbers) == 0 {
+			sums = append(sums, 0)
+		} else {
+			tail := numbers[1:]
+			sums = append(sums, Sum(tail))
+		}
+	}
 
-    return sums
+	return sums
 }
 ```
 
@@ -503,24 +503,24 @@ Our tests have some repeated code around assertion again, let's extract that int
 ```go
 func TestSumAllTails(t *testing.T) {
 
-    checkSums := func(t *testing.T, got, want []int) {
-        t.Helper()
-        if !reflect.DeepEqual(got, want) {
-            t.Errorf("got %v want %v", got, want)
-        }
-    }
+	checkSums := func(t *testing.T, got, want []int) {
+		t.Helper()
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	}
 
-    t.Run("make the sums of tails of", func(t *testing.T) {
-        got := SumAllTails([]int{1, 2}, []int{0, 9})
-        want := []int{2, 9}
-        checkSums(t, got, want)
-    })
+	t.Run("make the sums of tails of", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2}, []int{0, 9})
+		want := []int{2, 9}
+		checkSums(t, got, want)
+	})
 
-    t.Run("safely sum empty slices", func(t *testing.T) {
-        got := SumAllTails([]int{}, []int{3, 4, 5})
-        want := []int{0, 9}
-        checkSums(t, got, want)
-    })
+	t.Run("safely sum empty slices", func(t *testing.T) {
+		got := SumAllTails([]int{}, []int{3, 4, 5})
+		want := []int{0, 9}
+		checkSums(t, got, want)
+	})
 
 }
 ```
@@ -558,6 +558,12 @@ slices. Try writing more tests to demonstrate what you learn from reading it.
 Another handy way to experiment with Go other than writing tests is the Go
 playground. You can try most things out and you can easily share your code if
 you need to ask questions. [I have made a go playground with a slice in it for you to experiment with.](https://play.golang.org/p/ICCWcRGIO68)
+
+[Here is an example](https://play.golang.org/p/bTrRmYfNYCp) of slicing an array 
+and how changing the slice affects the original array; but a "copy" of the slice 
+will not affect the original array.
+[Another example](https://play.golang.org/p/Poth8JS28sc) of why it's a good idea 
+to make a copy of a slice after slicing a very large slice.
 
 [for]: ../iteration.md#
 [blog-slice]: https://blog.golang.org/go-slices-usage-and-internals

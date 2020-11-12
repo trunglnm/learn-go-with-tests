@@ -9,7 +9,7 @@ import (
 
 func TestCountdown(t *testing.T) {
 
-	t.Run("prints 5 to Go!", func(t *testing.T) {
+	t.Run("prints 3 to Go!", func(t *testing.T) {
 		buffer := &bytes.Buffer{}
 		Countdown(buffer, &CountdownOperationsSpy{})
 
@@ -20,11 +20,11 @@ func TestCountdown(t *testing.T) {
 Go!`
 
 		if got != want {
-			t.Errorf("got '%s' want '%s'", got, want)
+			t.Errorf("got %q want %q", got, want)
 		}
 	})
 
-	t.Run("sleep after every print", func(t *testing.T) {
+	t.Run("sleep before every print", func(t *testing.T) {
 		spySleepPrinter := &CountdownOperationsSpy{}
 		Countdown(spySleepPrinter, spySleepPrinter)
 

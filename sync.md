@@ -126,7 +126,7 @@ t.Run("it runs safely concurrently", func(t *testing.T) {
     var wg sync.WaitGroup
     wg.Add(wantedCount)
 
-    for i:=0; i<wantedCount; i++ {
+    for i := 0; i < wantedCount; i++ {
         go func(w *sync.WaitGroup) {
             counter.Inc()
             w.Done()
@@ -144,7 +144,7 @@ We are using [`sync.WaitGroup`](https://golang.org/pkg/sync/#WaitGroup) which is
 
 > A WaitGroup waits for a collection of goroutines to finish. The main goroutine calls Add to set the number of goroutines to wait for. Then each of the goroutines runs and calls Done when finished. At the same time, Wait can be used to block until all goroutines have finished.
 
-By waiting for `wg.Wait()` to finish before making our assertions we can be sure all of our goroutines have attempted to `Inc` the `Counter`,
+By waiting for `wg.Wait()` to finish before making our assertions we can be sure all of our goroutines have attempted to `Inc` the `Counter`.
 
 ## Try to run the test
 
@@ -268,7 +268,7 @@ Paraphrasing:
 
 Remember to use go vet in your build scripts as it can alert you to some subtle bugs in your code before they hit your poor users.
 
-### Dont use embedding because it's convenient
+### Don't use embedding because it's convenient
 
 - Think about the effect embedding has on your public API.
 - Do you _really_ want to expose these methods and have people coupling their own code to them?

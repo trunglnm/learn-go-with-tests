@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-// Racer compares the response times of a and b, returning the fastest one
+// Racer compares the response times of a and b, returning the fastest one.
 func Racer(a, b string) (winner string) {
 	select {
 	case <-ping(a):
@@ -14,11 +14,11 @@ func Racer(a, b string) (winner string) {
 	}
 }
 
-func ping(url string) chan bool {
-	ch := make(chan bool)
+func ping(url string) chan struct{} {
+	ch := make(chan struct{})
 	go func() {
 		http.Get(url)
-		ch <- true
+		close(ch)
 	}()
 	return ch
 }

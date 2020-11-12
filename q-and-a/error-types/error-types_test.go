@@ -17,7 +17,7 @@ func (b BadStatusError) Error() string {
 	return fmt.Sprintf("did not get 200 from %s, got %d", b.URL, b.Status)
 }
 
-// DumbGetter will get the string body of url if it gets a 200
+// DumbGetter will get the string body of url if it gets a 200.
 func DumbGetter(url string) (string, error) {
 	res, err := http.Get(url)
 
@@ -36,8 +36,7 @@ func DumbGetter(url string) (string, error) {
 }
 
 func TestDumbGetter(t *testing.T) {
-
-	t.Run("when you dont get a 200 you get a status error", func(t *testing.T) {
+	t.Run("when you don't get a 200 you get a status error", func(t *testing.T) {
 
 		svr := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 			res.WriteHeader(http.StatusTeapot)

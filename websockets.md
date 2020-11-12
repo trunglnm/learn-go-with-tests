@@ -1,5 +1,7 @@
 # WebSockets
 
+**[You can find all the code for this chapter here](https://github.com/quii/learn-go-with-tests/tree/master/websockets)**
+
 In this chapter we'll learn how to use WebSockets to improve our application. 
 
 ## Project recap
@@ -29,9 +31,9 @@ After that we'll work on the blind alerts by which point we will have a bit of i
 
 ### What about tests for the JavaScript ?
 
-There will be some JavaScript written to do this but I wont go in to writing tests. 
+There will be some JavaScript written to do this but I won't go in to writing tests. 
 
-It is of course possible but for the sake of brevity I wont be including any explanations for it. 
+It is of course possible but for the sake of brevity I won't be including any explanations for it. 
 
 Sorry folks. Lobby O'Reilly to pay me to make a "Learn JavaScript with tests".
 
@@ -171,7 +173,7 @@ We have a very simple web page
  - A button they can click to declare the winner. 
  - Some JavaScript to open a WebSocket connection to our server and handle the submit button being pressed
 
-`WebSocket` is built into most modern browsers so we don't need to worry about bringing in any libraries. The web page wont work for older browsers, but we're ok with that for this scenario.
+`WebSocket` is built into most modern browsers so we don't need to worry about bringing in any libraries. The web page won't work for older browsers, but we're ok with that for this scenario.
 
 ### How do we test we return the correct markup?
 
@@ -321,7 +323,7 @@ AssertPlayerWin(t, store, winner)
 
 We committed many sins to make this test work both in the server code and the test code but remember this is the easiest way for us to work. 
 
-We have nasty, horrible, _working_ software backed by a test, so now we are free to make it nice and know we wont break anything accidentally. 
+We have nasty, horrible, _working_ software backed by a test, so now we are free to make it nice and know we won't break anything accidentally. 
 
 Let's start with the server code.
 
@@ -356,7 +358,7 @@ const htmlTemplatePath = "game.html"
 func NewPlayerServer(store PlayerStore) (*PlayerServer, error) {
 	p := new(PlayerServer)
 
-	tmpl, err := template.ParseFiles("game.html")
+	tmpl, err := template.ParseFiles(htmlTemplatePath)
 
 	if err != nil {
 		return nil, fmt.Errorf("problem opening %s %v", htmlTemplatePath, err)
@@ -545,7 +547,7 @@ func StdOutAlerter(duration time.Duration, amount int) {
 }
 ```
 
-This works in CLI because we _always want to send the alerts to `os.Stdout`_ but this wont work for our web server. For every request we get a new `http.ResponseWriter` which we then upgrade to `*websocket.Conn`. So we cant know when constructing our dependencies where our alerts need to go. 
+This works in CLI because we _always want to send the alerts to `os.Stdout`_ but this won't work for our web server. For every request we get a new `http.ResponseWriter` which we then upgrade to `*websocket.Conn`. So we can't know when constructing our dependencies where our alerts need to go. 
 
 For that reason we need to change `BlindAlerter.ScheduleAlertAt` so that it takes a destination for the alerts so that we can re-use it in our webserver. 
 
@@ -700,7 +702,7 @@ Next lets assign it in our constructor
 func NewPlayerServer(store PlayerStore, game Game) (*PlayerServer, error) {
 	p := new(PlayerServer)
 
-	tmpl, err := template.ParseFiles("game.html")
+	tmpl, err := template.ParseFiles(htmlTemplatePath)
 
 	if err != nil {
 		return nil, fmt.Errorf("problem opening %s %v", htmlTemplatePath, err)
@@ -719,7 +721,7 @@ func (p *PlayerServer) webSocket(w http.ResponseWriter, r *http.Request) {
 
 	_, numberOfPlayersMsg, _ := conn.ReadMessage()
 	numberOfPlayers, _ := strconv.Atoi(string(numberOfPlayersMsg))
-	p.game.Start(numberOfPlayers, ioutil.Discard) //todo: Dont discard the blinds messages!
+	p.game.Start(numberOfPlayers, ioutil.Discard) //todo: Don't discard the blinds messages!
 
 	_, winner, _ := conn.ReadMessage()
 	p.game.Finish(string(winner))
@@ -766,7 +768,7 @@ Before that though, let's tidy up some code.
 
 ## Refactor
 
-The way we're using WebSockets is fairly basic and the error handling is fairly naive, so I wanted to encapsulate that in a type just to remove that messyness from the server code. We may wish to revisit it later but for now this'll tidy things up a bit
+The way we're using WebSockets is fairly basic and the error handling is fairly naive, so I wanted to encapsulate that in a type just to remove that messiness from the server code. We may wish to revisit it later but for now this'll tidy things up a bit
 
 ```go
 type playerServerWS struct {
@@ -800,7 +802,7 @@ func (p *PlayerServer) webSocket(w http.ResponseWriter, r *http.Request) {
 
 	numberOfPlayersMsg := ws.WaitForMsg()
 	numberOfPlayers, _ := strconv.Atoi(numberOfPlayersMsg)
-	p.game.Start(numberOfPlayers, ioutil.Discard) //todo: Dont discard the blinds messages!
+	p.game.Start(numberOfPlayers, ioutil.Discard) //todo: Don't discard the blinds messages!
 
 	winner := ws.WaitForMsg()
 	p.game.Finish(winner)
@@ -816,7 +818,7 @@ Sometimes when we're not sure how to do something, it's best just to play around
 The problematic line of code we have is 
 
 ```go
-p.game.Start(numberOfPlayers, ioutil.Discard) //todo: Dont discard the blinds messages!
+p.game.Start(numberOfPlayers, ioutil.Discard) //todo: Don't discard the blinds messages!
 ```
 
 We need to pass in an `io.Writer` for the game to write the blind alerts to. 
@@ -846,7 +848,7 @@ It seems the obvious thing to do, would be to make it so `playerServerWS` _does_
 
 ```go
 func (w *playerServerWS) Write(p []byte) (n int, err error) {
-	err = w.WriteMessage(1, p)
+	err = w.WriteMessage(websocket.TextMessage, p)
 
 	if err != nil {
 		return 0, err
@@ -920,14 +922,14 @@ t.Run("start a game with 3 players, send some blind alerts down WS and declare R
     writeWSMessage(t, ws, "3")
     writeWSMessage(t, ws, winner)
 
-	time.Sleep(10 * time.Millisecond)
+    time.Sleep(10 * time.Millisecond)
     assertGameStartedWith(t, game, 3)
     assertFinishCalledWith(t, game, winner)
 
     _, gotBlindAlert, _ := ws.ReadMessage()
 
     if string(gotBlindAlert) != wantedBlindAlert {
-        t.Errorf("got blind alert '%s', want '%s'", string(gotBlindAlert), wantedBlindAlert)
+        t.Errorf("got blind alert %q, want %q", string(gotBlindAlert), wantedBlindAlert)
     }
 })
 ```
@@ -1048,7 +1050,7 @@ func assertFinishCalledWith(t *testing.T, game *GameSpy, winner string) {
 	})
 
 	if !passed {
-		t.Errorf("expected finish called with '%s' but got '%s'", winner, game.FinishCalledWith)
+		t.Errorf("expected finish called with %q but got %q", winner, game.FinishCalledWith)
 	}
 }
 ```
@@ -1085,5 +1087,5 @@ We covered a few things in this chapter
 ### Handling code in tests that can be delayed or never finish
 
 - Create helper functions to retry assertions and add timeouts. 
-- We can use go routines to ensure the assertions dont block anything and then use channels to let them signal that they have finished, or not. 
+- We can use go routines to ensure the assertions don't block anything and then use channels to let them signal that they have finished, or not. 
 - The `time` package has some helpful functions which also send signals via channels about events in time so we can set timeouts

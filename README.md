@@ -6,11 +6,21 @@
 
 [Art by Denise](https://twitter.com/deniseyu21)
 
-![Build Status](https://travis-ci.org/quii/learn-go-with-tests.svg?branch=master)
+[![Build Status](https://travis-ci.org/quii/learn-go-with-tests.svg?branch=master)](https://travis-ci.org/quii/learn-go-with-tests)
 [![Go Report Card](https://goreportcard.com/badge/github.com/quii/learn-go-with-tests)](https://goreportcard.com/report/github.com/quii/learn-go-with-tests)
 
-- Formats: [Gitbook](https://quii.gitbook.io/learn-go-with-tests), [EPUB or PDF](https://github.com/quii/learn-go-with-tests/releases)
-- Translations: [中文](https://studygolang.gitbook.io/learn-go-with-tests)
+## Formats
+
+- [Gitbook](https://quii.gitbook.io/learn-go-with-tests)
+- [EPUB or PDF](https://github.com/quii/learn-go-with-tests/releases)
+
+## Translations
+
+- [中文](https://studygolang.gitbook.io/learn-go-with-tests) 
+- [Português](https://larien.gitbook.io/aprenda-go-com-testes/)
+- [日本語](https://andmorefine.gitbook.io/learn-go-with-tests/)
+
+[Buy me a coffee :coffee:](https://www.buymeacoffee.com/quii)!
 
 ## Why
 
@@ -38,6 +48,8 @@
 13. [Reflection](reflection.md) - Learn about reflection
 13. [Sync](sync.md) - Learn some functionality from the sync package including `WaitGroup` and `Mutex`
 13. [Context](context.md) - Use the context package to manage and cancel long-running processes
+14. [Intro to property based tests](roman-numerals.md) - Practice some TDD with the Roman Numerals kata and get a brief intro to property based tests
+15. [Maths](math.md) - Use the `math` package to draw an SVG clock
 
 ### Build an application
 
@@ -68,6 +80,8 @@ If you have such a question raise it as an issue on github and I'll try and find
 
 * [OS exec](os-exec.md) - An example of how we can reach out to the OS to execute commands to fetch data and keep our business logic testable/
 * [Error types](error-types.md) - Example of creating your own error types to improve your tests and make your code easier to work with.
+* [Context-aware Reader](context-aware-reader.md) - Learn how to TDD augmenting `io.Reader` with cancellation. Based on [Context-aware io.Reader for Go](https://pace.dev/blog/2020/02/03/context-aware-ioreader-for-golang-by-mat-ryer)
+* [Revisiting HTTP Handlers](http-handlers-revisited.md) - Testing HTTP handlers seems to be the bane of many a developer's existence. This chapter explores the issues around designing handlers correctly.
 
 ## Contributing
 
